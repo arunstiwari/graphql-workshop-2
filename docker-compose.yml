@@ -1,0 +1,31 @@
+version: "3"
+services:
+  mongo: 
+    image: "mongo:latest"
+    ports: 
+    - "27017:27017"
+  userservice: 
+    ports:
+    - "3000:3000"
+    build:
+      dockerfile: Dockerfile
+      context: ./users/
+    environment:
+      - JWT_SECRET=tekmentors
+      - USER_DB_URL=mongodb://mongo:27017/users-db
+      - USER_SERVICE_PORT=3000
+    links: 
+      - mongo
+  graphqlservice:
+    ports:
+    - "3100:3100"
+    build:
+      dockerfile: Dockerfile
+      context: ./graphql-server/
+    environment:
+      - JWT_SECRET=tekmentors
+      - USER_SERVICE=http://userservice:3000/
+      - GRAPHQL_SERVICE_PORT=3100
+    links:
+      - userservice          
+  

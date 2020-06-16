@@ -1,7 +1,8 @@
 const axios = require('axios');
+console.log('----USER_SERVICE_URL ----',process.env.USER_SERVICE);
 
 const instance = axios.create({
-    baseURL: 'http://localhost:3000/'
+    baseURL: `${process.env.USER_SERVICE}`
 })
 
 const registerUser = async (user) => {
